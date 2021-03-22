@@ -11,7 +11,7 @@ function SignInForm({signIn, error}){
  }
   return (
     <div className="signInPage">
-      <h1>tic-tac-toe</h1>
+      <h1>tIc-tAc-tOe</h1>
       <form onSubmit={handleSubmit}>
             <div className="form-heading">
                 <h2>Log In</h2>

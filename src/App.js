@@ -1,6 +1,7 @@
 
-import {React, useState} from 'react';
-import SignInForm from './components/signInForm/signIn'
+import {React, useState, useEffect} from 'react';
+import SignInForm from './components/signInForm/signIn';
+import Homepage from './components/homepage/homepage';
 import './App.css';
 
 
@@ -16,27 +17,37 @@ function App() {
                   username:'Warrior', email: 'lok@london.com', password: 'jhapa123', online: true, friends:['Monk','Fighter']
                  }
   ];
-  const [user, setUser] = useState({name:"", email:""});
+  const [isLoggedIn, setisLoggedIn] = useState(false);
+
+  const [user, setUser] = useState(null);
 
   const [error, setError] = useState("");
 
   const signIn = (logInDetails) => {
     users.map(user => {
          if (logInDetails.email === user.email && logInDetails.password === user.password){
-           console.log('You have Signed up!!')
-         } else {
-           setError("Incorrect email or password!")
-         }
+           console.log('You have Signed up!!');        
+           //setisLoggedIn(true);
+           setUser(user);
+           console.log(isLoggedIn);
+           setError("");
+         }    
     })
   }
+  useEffect( () => {
+      if(!isLoggedIn){
+        setError("Incorrect email or password")
+      }
+  }, [isLoggedIn])
 
   const signOut = () => {
-   console.log("Bye!!")
+   setUser(null);
   }
 
   return (
     <div className="App">
-       <SignInForm signIn={signIn} error={error}/>
+      {(user)? <Homepage signOut={signOut} user={user} /> : <SignInForm signIn={signIn} error={error}/>}
+       
     </div>
   );
 }

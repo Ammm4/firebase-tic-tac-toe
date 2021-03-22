@@ -1,0 +1,76 @@
+.homepage {
+  background-color: #282828;
+  padding: 1% 5%;
+  height: 100vh;
+  color: #f9f9f9
+}
+/* ================== Navbar Start ===================== */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.signOut button {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: #f9f9f9;
+  cursor: pointer;
+}
+
+.signOut button:hover {
+  text-decoration: underline;  
+  color: #808080;
+}
+/* ================== Navbar End ===================== */
+
+/* ======================= Friends Start ============== */
+.friends {
+  margin: 2rem 0rem;
+}
+
+.friends .heading-line {
+  position: relative;
+  width: 100%;
+  height: 5px;
+  border-top: 3px solid #f9f9f9
+}
+
+.friends .heading-line::before {
+  position: absolute;
+  top:-0.75rem; left: 2rem;
+  background-color: #282828;
+  content: 'Friends';
+  padding: 0 1rem;
+  
+}
+
+.friend-list {
+  margin-top: 1rem;
+  display: flex;
+}
+
+.friend-list li{
+  list-style-type: none;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+
+.online-circle {
+  display: inline-block;
+  background-color: green;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+/* ======================= Friends End ============== */
+
+.inviteForGame {
+  max-width: 250px;
+  background-color: #181818;
+  margin: auto;
+  padding: 1rem;
+  border-radius: .5rem;
+  text-align: center;
+}
