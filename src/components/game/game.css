@@ -1,0 +1,117 @@
+:root {
+  --square-size:70px;
+  --mark-size: calc(var(--square-size) * 0.9)
+}
+.score-area {
+  width:250px;
+  margin: auto;
+  text-align: center;
+}
+.scores {
+  display: flex;
+  justify-content: space-between; 
+  justify-items: center;
+  align-items: center;
+}
+
+.game-board {
+  margin-top: 1rem;
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: repeat(3, auto);
+}
+
+.square {
+  position: relative;
+  width: var(--square-size);
+  height: var(--square-size);
+  background-color: #f9f9f9;
+  border: 1px solid grey;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* ==================== Cross and Circles Design ============== */
+
+.square.x-sign::before,
+.square.x-sign::after,
+.square.o-sign::before{
+  background-color: #111111;
+}
+
+.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::before,
+.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::after,
+.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::before{
+  background-color: lightgrey;
+}
+
+.square.x-sign::before,
+.square.x-sign::after,
+.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::before,
+.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::after{
+  position: absolute;
+  content:'';
+  width: calc(var(--mark-size) * .15);
+  height: var(--mark-size);
+}
+
+.square.x-sign::before,
+.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::before
+ {
+  transform: rotate(45deg);
+}
+
+.square.x-sign::after,
+.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::after{
+  transform: rotate(-45deg);
+}
+
+.square.o-sign::before,
+.square.o-sign::after,
+.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::before,
+.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::after{
+  position: absolute;
+  content:''; 
+  border-radius: 50%;
+}
+
+.square.o-sign::before,
+.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::before {
+  width: var(--mark-size);
+  height: var(--mark-size);
+}
+
+.square.o-sign::after,
+.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::after {
+  width: calc(var(--mark-size) * .7);
+  height: calc(var(--mark-size) * .7);
+  background-color: #f9f9f9;
+}
+.square.x-sign, .square.o-sign{
+  cursor: not-allowed;
+}
+/* ==================== Cross and Circles Design ============== */
+
+/* ==================== Game Result Display ============== */
+.resultBoard {
+  position: fixed;
+  top:0;left:0;
+  bottom:0;right:0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.resultBoard .results{
+  text-transform: capitalize;
+  color:white;
+  font-size: 1.5rem;
+}
+.resultBoard button {
+  padding: 0.5rem .25rem;
+}

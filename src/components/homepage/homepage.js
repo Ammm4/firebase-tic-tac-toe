@@ -1,6 +1,16 @@
 import React, {useState} from 'react';
+import Game from '../game/game'
 import './homepage.css';
 
+const ResultBoard = ({winner,resetGameBoard}) => {
+  return( <div className="resultBoard">
+                    <div className="results">{winner} wins</div>
+                    <button onClick={() => resetGameBoard()}>Play Again</button>
+                    <button>Close Game</button>
+          </div>)
+}
+
+//============== Game Invitation Dialog Box
 const GameInvitation = ({friend, inviteFriend}) => {
   const handleClick = () => {
     inviteFriend();
@@ -14,11 +24,14 @@ const GameInvitation = ({friend, inviteFriend}) => {
 
 }
 const Homepage = ({signOut, user}) =>{
+  
+  const [inviteFriendForGame, setInviteFriendForGame] = useState("");
+  const [showInvitationBox, setShowInvitationBox] = useState(false)
+  const [showGameBoard, setshowGameBoard] = useState(false);
 
-  const [inviteForGame, setinviteForGame] = useState("");
-
-  const handleClickFriend = (friend) => {
-    setinviteForGame(friend);
+  const handleClickFriend = (friendName) => {
+    setShowInvitationBox(true);
+    setInviteFriendForGame(friendName);
   }
 
   const handleClick = () => {
@@ -26,13 +39,14 @@ const Homepage = ({signOut, user}) =>{
   }
 
   const inviteFriend = () => {
-    setinviteForGame("")
+    setShowInvitationBox(false);
+    setshowGameBoard(true);
   }
 
   return (
     <div className="homepage">
        <div className="nav">
-           <div className="userPart">Welcome Amit</div>
+           <div className="userPart">Welcome {user.username}</div>
            <div className="signOut"><button onClick={handleClick}>Sign Out</button></div>
        </div>
        <div className="friends">
@@ -44,9 +58,9 @@ const Homepage = ({signOut, user}) =>{
                                                     <span className="online-circle"></span>
                                                     </li>)}
          </ul>
-         { inviteForGame && <GameInvitation friend={inviteForGame} inviteFriend={inviteFriend} />}
+         {showInvitationBox && <GameInvitation friend={inviteFriendForGame} inviteFriend={inviteFriend} />}
        </div>
-       
+       {showGameBoard && <Game friendName={inviteFriendForGame} />}
     </div>
   )
 }

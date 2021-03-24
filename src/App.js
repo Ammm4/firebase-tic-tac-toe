@@ -24,21 +24,19 @@ function App() {
   const [error, setError] = useState("");
 
   const signIn = (logInDetails) => {
-    users.map(user => {
-         if (logInDetails.email === user.email && logInDetails.password === user.password){
-           console.log('You have Signed up!!');        
-           //setisLoggedIn(true);
-           setUser(user);
-           console.log(isLoggedIn);
+    users.forEach(user => {
+         if (logInDetails.email === user.email && logInDetails.password === user.password){         
+           setisLoggedIn(true);
+           setUser(user); 
            setError("");
          }    
     })
   }
-  useEffect( () => {
+  /* useEffect( () => {
       if(!isLoggedIn){
         setError("Incorrect email or password")
       }
-  }, [isLoggedIn])
+  }, []) */
 
   const signOut = () => {
    setUser(null);

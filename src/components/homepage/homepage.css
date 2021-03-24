@@ -1,7 +1,7 @@
 .homepage {
   background-color: #282828;
   padding: 1% 5%;
-  height: 100vh;
+  min-height: 100vh;
   color: #f9f9f9
 }
 /* ================== Navbar Start ===================== */
@@ -60,6 +60,7 @@
 .online-circle {
   display: inline-block;
   background-color: green;
+  margin-left: 2px;
   width: 5px;
   height: 5px;
   border-radius: 50%;
