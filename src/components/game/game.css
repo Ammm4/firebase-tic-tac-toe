@@ -1,27 +1,113 @@
 :root {
   --square-size:70px;
-  --mark-size: calc(var(--square-size) * 0.9)
+  --mark-size: calc(var(--square-size) * 0.75)
 }
+
+.gameArea {
+  position: relative;
+}
+
+.gameArea .screen{
+  position: absolute;
+  background-color: transparent;
+  top:0;right:0;
+  left:0;bottom:0;
+  z-index: 11;
+}
+
 .score-area {
   width:250px;
-  margin: auto;
+  margin: 3rem auto 1rem auto;
   text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
 }
 .scores {
   display: flex;
-  justify-content: space-between; 
   justify-items: center;
   align-items: center;
 }
 
 .game-board {
-  margin-top: 1rem;
+  position: relative;
+  margin:auto;
+  margin-top: 0.5rem;
+  width:210px;
   display: grid;
   justify-content: center;
   justify-items: center;
   align-items: center;
   grid-template-columns: repeat(3, auto);
 }
+
+
+/*============== Winning Line Start ====================*/
+.leftDiagonal, .rightDiagonal {
+position: absolute;
+width: 295px;
+height: 4px;
+transform: rotate(45deg);
+background-color: none;
+z-index: -1;
+}
+
+.rightDiagonal{
+transform:rotate(-45deg);
+}
+  
+.leftInner, .rightInner, .bottomRow .innerDiv, .midRow .innerDiv, .topRow .innerDiv{
+  transition: linear 1s;
+  background-color: #111111;
+  height:100%;
+  width:0%;
+  }
+
+.leftColumn, .midColumn, .rightColumn {
+position: absolute;
+top:0;
+width: 4px;
+left: 35px;
+height:100%;
+background-color: none;
+transform: translateX(-50%);
+z-index: -1;
+}
+
+.midColumn {
+  left: 105px;
+}
+
+.rightColumn {
+right: 35px;
+}
+
+.leftColumn .innerDiv, .midColumn .innerDiv, .rightColumn .innerDiv{
+background-color: #111111;
+transition: linear 1s;
+width: 100%;
+height:0%;
+}
+
+.topRow, .midRow, .bottomRow {
+position: absolute;
+top:35px;
+left: 0px;
+width: 100%;
+height:4px;
+transform: translateY(-50%);
+background-color: none;
+z-index: -1;
+}
+
+.midRow {
+top: 105px;;
+}
+      
+.bottomRow {
+bottom: 35px;;
+}
+
+/*============== Winning Line End ====================*/
 
 .square {
   position: relative;
@@ -42,52 +128,37 @@
   background-color: #111111;
 }
 
-.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::before,
-.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::after,
-.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::before{
-  background-color: lightgrey;
-}
-
 .square.x-sign::before,
-.square.x-sign::after,
-.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::before,
-.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::after{
+.square.x-sign::after {
   position: absolute;
   content:'';
   width: calc(var(--mark-size) * .15);
   height: var(--mark-size);
 }
 
-.square.x-sign::before,
-.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::before
+.square.x-sign::before
  {
   transform: rotate(45deg);
 }
 
-.square.x-sign::after,
-.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::after{
+.square.x-sign::after {
   transform: rotate(-45deg);
 }
 
 .square.o-sign::before,
-.square.o-sign::after,
-.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::before,
-.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::after{
+.square.o-sign::after {
   position: absolute;
   content:''; 
   border-radius: 50%;
 }
 
-.square.o-sign::before,
-.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::before {
-  width: var(--mark-size);
-  height: var(--mark-size);
+.square.o-sign::before {
+  width: calc(var(--mark-size) * .9);
+  height: calc(var(--mark-size) * .9);
 }
-
-.square.o-sign::after,
-.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::after {
-  width: calc(var(--mark-size) * .7);
-  height: calc(var(--mark-size) * .7);
+.square.o-sign::after{
+  width: calc(var(--mark-size) * .6);
+  height: calc(var(--mark-size) * .6);
   background-color: #f9f9f9;
 }
 .square.x-sign, .square.o-sign{
@@ -105,6 +176,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 15;
 }
 
 .resultBoard .results{
@@ -114,4 +186,48 @@
 }
 .resultBoard button {
   padding: 0.5rem .25rem;
+}
+
+@media(hover:hover) {
+
+.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::before,
+.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::after,
+.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::before{
+background-color: lightgrey;
+}
+
+.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::before,
+.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::after{
+  position: absolute;
+  content:'';
+  width: calc(var(--mark-size) * .15);
+  height: var(--mark-size);
+}
+
+.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::before
+ {
+  transform: rotate(45deg);
+}
+
+.game-board.x-turn .square:not(.x-sign):not(.o-sign):hover::after{
+  transform: rotate(-45deg);
+}
+
+.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::before,
+.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::after{
+  position: absolute;
+  content:''; 
+  border-radius: 50%;
+}
+
+.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::before {
+  width: calc(var(--mark-size) * .9);
+  height: calc(var(--mark-size) * .9);
+}
+
+.game-board.o-turn .square:not(.x-sign):not(.o-sign):hover::after {
+  width: calc(var(--mark-size) * .6);
+  height: calc(var(--mark-size) * .6);
+  background-color: #f9f9f9;
+}
 }

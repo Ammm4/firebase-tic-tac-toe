@@ -6,6 +6,4 @@ const Square = ({squareStyle, clickhandler}) => (
 
 )
 
-
-
 export default Square;
