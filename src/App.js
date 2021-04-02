@@ -31,15 +31,12 @@ function App() {
            setError("");
          }    
     })
+    if (!isLoggedIn) setError("Invalid email or password!")
   }
-  /* useEffect( () => {
-      if(!isLoggedIn){
-        setError("Incorrect email or password")
-      }
-  }, []) */
 
   const signOut = () => {
    setUser(null);
+   setError("")
   }
 
   return (
