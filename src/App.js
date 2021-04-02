@@ -2,26 +2,29 @@
 import {React, useState, useEffect} from 'react';
 import SignInForm from './components/signInForm/signIn';
 import Homepage from './components/homepage/homepage';
+import database from './firebase/config';
 import './App.css';
 
 
 function App() {
-  const users = [
-                 {
-                   username:'Monk', email: 'amit@cardiff.com', password: 'tansen123', online: true, friends:['Fighter','Warrior']
-                 },
-                 {
-                 username:'Fighter', email: 'suraj@helsinki.com', password: 'dhamkada123', online: true, friends:['Monk','Warrior']
-                 },
-                 {
-                  username:'Warrior', email: 'lok@london.com', password: 'jhapa123', online: true, friends:['Monk','Fighter']
-                 }
-  ];
+  const [users, setUsers] = useState(null);
+
   const [isLoggedIn, setisLoggedIn] = useState(false);
 
   const [user, setUser] = useState(null);
 
   const [error, setError] = useState("");
+  
+  useEffect( () => {
+    let arr = [];
+    let ref = database.ref("users");
+    ref.once('value', (snapshot) => {
+           snapshot.forEach(function(childSnapshot){
+                 arr.push(childSnapshot.val())
+           })
+         })
+       setUsers(arr);
+    }, []);
 
   const signIn = (logInDetails) => {
     users.forEach(user => {
