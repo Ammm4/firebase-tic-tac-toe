@@ -12,11 +12,21 @@ const useCheck = () => {
                            [0,4,8],
                            [6,4,2]
                            ];
+            const winningLine = [
+                                 'topRow',
+                                 'midRow',
+                                 'bottomRow',
+                                 'leftColumn',
+                                 'midColumn',
+                                 'rightColumn',
+                                 'leftDiagonal',
+                                 'rightDiagonal'
+                                ]
 
             for(let i = 0; i < matrix.length; i++){
                const [a, b, c] = matrix[i];
                if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]){
-                  return true
+                  return winningLine[i];
                }
             }
             return null
