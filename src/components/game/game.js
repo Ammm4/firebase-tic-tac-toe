@@ -6,17 +6,16 @@ import database from '../../firebase/config';
 import './game.css';
 
   const CurrentPlayer = ({user, currentPlayer, friendName, currentTurn}) => {
+    let sign = currentTurn? "O":"X";
       return (
         <div className="score-area">                                   
-                         {currentPlayer !== user.username? "Your Turn":`${friendName}'s turn` }
-                         <div className={currentPlayer === user.username? 'screen':'' }></div> 
-                         <div>{currentTurn? "O":"X"}</div>                     
+                         {currentPlayer !== user.username? `Your Turn(${sign})`:`${friendName}'s Turn(${sign})` }                                          
         </div>     
 
       )
 
   }
-  
+
   const Game = ({user, friendName}) => {
         const cellRef = database.ref("GameDetails");
         const {winCheck} = useCheck();
@@ -31,7 +30,9 @@ import './game.css';
        const switchTurn = () => {
           cellRef.child("Turn").update({CurrentTurn: !currentTurn})
        }
-
+       const resetTurn = () => {
+        cellRef.child("Turn").update({CurrentTurn: false})
+       }
       const playAgain = () => {
            cellRef.child("Result").update({WinningLine: ""});
            cellRef.child("Result").update({showResult: false});
@@ -39,31 +40,36 @@ import './game.css';
             for(let i = 0; i < 9; i++){
               let currentCell = "cell" + i;
               cellRef.child("Cells").update({[currentCell]: ""})
-            }
-            switchTurn();
+            }      
         }
-
         
+        const resultDisplay = (username, winner) => {
+          cellRef.child("Result").update({showResult: true});
+          cellRef.child("Result").update({Winner: winner});
+          if (!currentTurn){
+                    cellRef.child("Turn").update({LastMove: username})                  
+                  }
+          resetTurn();
+        }
         const handleClick = (index) => {                
                 const squaresCopy = [...squares];
                 if(squaresCopy[index]) return;
                 squaresCopy[index] = currentTurn? 'square o-sign':'square x-sign';                            
                 let currentCell = "cell" + index;
                 cellRef.child("Cells").update({[currentCell]: squaresCopy[index]})
-                switchTurn();
                 let winDetails = winCheck(squaresCopy);
                 if(winDetails){
                   cellRef.child("Result").update({WinningLine: winDetails});
-                  cellRef.child("Result").update({showResult: true});
-                  cellRef.child("Result").update({Winner: user.username});
+                  resultDisplay(user.username,user.username);
+                  return
                 } else {
-                  if(squaresCopy.every(item => item)){
-                    cellRef.child("Result").update({showResult: true});
-                    cellRef.child("Result").update({Winner: 'Draw'});
+                  if(squaresCopy.every(item => item)){            
+                    resultDisplay(user.username,'Draw');            
+                    return
                   };
                 }
+                switchTurn();
                 cellRef.child("Turn").update({LastMove: user.username})
-
         }
 
         useEffect(() => {
@@ -102,10 +108,13 @@ import './game.css';
         return(
           <div className="gameArea">
               <h1>Game</h1>
-              <CurrentPlayer user={user} currentPlayer={currentplayer} friendName={friendName} currentTurn={currentTurn}/>
-              <Board squares={squares} handleClick={handleClick} currentTurn={currentTurn} winningLine={winningLine}/>
+              {!showResult && <CurrentPlayer user={user} currentPlayer={currentplayer} friendName={friendName} currentTurn={currentTurn}/>}
               {showResult && <ResultBoard user={user} winner={winner} playAgain={playAgain}/>}
-              
+              <div className="screenReference">
+                  <Board squares={squares} handleClick={handleClick} currentTurn={currentTurn} winningLine={winningLine}/>
+                  <div className={showResult? "screenY":""}></div>
+                  <div className={currentplayer === user.username? "screenY":""}></div>             
+              </div>
           </div>
         )
 }

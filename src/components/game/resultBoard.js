@@ -1,13 +1,13 @@
 import React from 'react';
 
 const ResultBoard = ({user, winner, playAgain}) => {
-    return (<div className="resultBoard">
+    return (<div className="score-area">
+            <h6>Game Over</h6>
             {(winner !== 'Draw')?
-                   <div className="results">{winner === user.username? 'You Win!': `${winner} wins!` }</div>:
-                   <div className="results">Game Draw!</div>  
+                   <div className="results blink">{winner === user.username? 'You Win!': `${winner} wins!` }</div>:
+                   <div className="results blink">Match Draw!</div>  
                 }          
-                <button onClick={() => playAgain()}>Play Again</button>
-                <button>Close Game</button>
+             <button onClick={() => playAgain()}>Play Again</button>
             </div>)
 }
 
