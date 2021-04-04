@@ -48,7 +48,12 @@
   letter-spacing: 2px;
   cursor: pointer;
 }
-
+.score-area .logo {
+  margin: 0.9rem 0;
+}
+.logo .fa-play-circle, .logo .fa-pause-circle {
+  font-size: 1.9rem;
+}
 .scores {
   display: flex;
   justify-items: center;

@@ -29,7 +29,7 @@ function SignInForm({signIn, error}){
             <p>Don't have an account? <a href="#">Sign Up</a></p>  
             <p className="error">{error}</p> 
       </form>
-      
+      <h5 className="bottom-line">Project Dedicated to Suraj Neupane.</h5>
     </div>
   )
 }

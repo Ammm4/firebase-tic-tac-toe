@@ -9,7 +9,10 @@ import './game.css';
     let sign = currentTurn? "O":"X";
       return (
         <div className="score-area">                                   
-                         {currentPlayer !== user.username? `Your Turn(${sign})`:`${friendName}'s Turn(${sign})` }                                          
+                         {currentPlayer !== user.username? `Your Turn(${sign})`:`${friendName}'s Turn(${sign})` }
+                         <div className="logo">
+                          {currentPlayer !== user.username? <i class="far fa-play-circle"></i>: <i class="far fa-pause-circle"></i>}
+                         </div>                                          
         </div>     
 
       )
