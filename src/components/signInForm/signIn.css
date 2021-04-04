@@ -34,10 +34,21 @@ input[type="submit"], input[type="email"], input[type="password"]{
   padding: .5rem;
 }
 
+input[type="submit"] {
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+}
 form div.form-inputs, form p, input[type="submit"] {
   margin-top: 1rem;
 }
 
 p.error {
   color: rgba(255,0,0,0.75);
+}
+
+@media only screen and (max-width: 768px) {
+  input[type="email"], input[type="password"], input[type="submit"]{
+    font-size: 16px;
+  }
 }
