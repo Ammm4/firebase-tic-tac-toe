@@ -1,9 +1,22 @@
 .homepage {
+  position: absolute;
+  top:50%;left:50%;
+  transform: translate(-50%,-50%);
   background-color: #282828;
-  padding: 1% 5%;
-  min-height: 100vh;
-  color: #f9f9f9
-}
+  padding: 1.125% 2%;
+  color: #f9f9f9;
+  width: 100%;
+  max-width: 768px;
+  height: 590px;
+  background-image: url('../../images/bg.gif');
+  background-origin: padding-box;
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: 100% 100%;
+  border: none;
+  outline: none
+} 
+
 /* ================== Navbar Start ===================== */
 .nav {
   display: flex;
@@ -11,6 +24,9 @@
   align-items: center;
 }
 
+.user-part {
+  font-size: 0.85rem;
+}
 .signOut button {
   outline: none;
   border: none;
@@ -21,57 +37,147 @@
 
 .signOut button:hover {
   text-decoration: underline;  
-  color: #808080;
+  color: #494949;
 }
 /* ================== Navbar End ===================== */
 
 /* ======================= Friends Start ============== */
-.friends {
-  margin: 2rem 0rem;
-}
-
-.friends .heading-line {
-  position: relative;
-  width: 100%;
-  height: 5px;
-  border-top: 3px solid #f9f9f9
-}
-
-.friends .heading-line::before {
-  position: absolute;
-  top:-0.75rem; left: 2rem;
-  background-color: #282828;
-  content: 'Friends';
-  padding: 0 1rem;
+.main-area {
+  margin-top: 4.25rem;
   
 }
 
-.friend-list {
-  margin-top: 1rem;
-  display: flex;
+
+/* ======================= Friends End ============== */
+
+
+
+/* ======================= PlayersBoard Start ============== */
+.playersDisplay {
+  position: relative;
+  top: 0.25rem;
+  padding:10px 10px;
+  background-color: rgba(100, 100, 100, 0.7);
+  border-radius: 2px;
+  max-width: 300px;
+  margin: auto;
+  width: 100%;
+  justify-items: center;
+  justify-content: center;
+  color: #eeeeee;
 }
 
-.friend-list li{
+.playersList {
+  width: 100%; 
+  max-height: 315px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;  
+}
+
+.playersList::-webkit-scrollbar {
+  display: none;
+}
+
+.playersList li {
   list-style-type: none;
-  margin-left: 1rem;
+  margin: 0.9rem auto;
+  background-color: #393939;
+  padding: 8px;
+  border-radius: 3px;
+  display: flex;
+  justify-content: space-between;
   cursor: pointer;
 }
 
-.online-circle {
+.playersList li .playerName{
   display: inline-block;
-  background-color: green;
-  margin-left: 2px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  
 }
-/* ======================= Friends End ============== */
+.playerName .status{
+  font-size: 0.7rem;
+}
 
-.inviteForGame {
-  max-width: 250px;
-  background-color: #181818;
-  margin: auto;
-  padding: 1rem;
-  border-radius: .5rem;
+.playersList li button{
+  border: none;
+  outline: none;
+  background-color: #494949;
+  box-shadow: 2px 2px rgba(0,0,0, 0.3);
+  padding: 0px 9px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+  font-size: 0.73rem;
+  color: #f1f1f1
+}
+
+/* ======================= PlayersBoard End ============== */
+/* ======================= Invitation Box Starts ============== */
+
+
+/* ============ Invite Form =============== */
+.invite-form {
+  position: absolute;
+  top:0;left:0;
+  bottom: 0; right: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.invite-form div {
+  display: flex;
+  flex-direction: column;
   text-align: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  font-size: 0.9rem;
+}
+
+.invite-form div img{
+  display: block;
+  margin: auto;
+  width: 90px;
+  height: 90px;
+}
+
+.invite-form div button {
+  display: inline-block;
+  margin: 1rem auto 0 auto;
+  font-size: 0.9rem;
+  outline: none;
+  border: none;
+  background-color: #808080;
+  width: 8rem;
+  padding: 8px 0px;
+  border-radius: 2px;
+  color: #eeeeee;
+  cursor: pointer;
+}
+
+.close-invite-form{
+  position: absolute;
+  top:1%;
+  right: 5%;
+}
+
+/* ============ Media Queries =============== */
+@media screen and (max-width:768px) {
+    .main-area {
+      grid-template-columns: 1fr;
+      grid-gap: 5px;
+    }
+
+    i.fa-angle-double-up, i.fa-angle-double-down {
+      display: inline-block;
+    }
+
+} 
+@media screen and (max-width:280px) {
+  .main-area {
+    padding: 0 1%;
+  }
 }
