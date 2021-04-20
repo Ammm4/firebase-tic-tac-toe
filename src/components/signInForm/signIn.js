@@ -2,12 +2,16 @@ import React, {useState} from 'react';
 import './signIn.css';
 
 
-function SignInForm({signIn, error}){
+function SignInForm({signIn, error, showSignUpForm}){
  const [signInDetails, setSignInDetails] = useState({email:"", password:""})
 
  const handleSubmit = (event) => {
        event.preventDefault();
        signIn(signInDetails)
+ }
+ const handleClick = (e) => {
+   e.preventDefault();
+   showSignUpForm();
  }
   return (
     <div className="signInPage">
@@ -26,7 +30,7 @@ function SignInForm({signIn, error}){
             </div> 
             
             <input type="submit" value="Sign In"/>
-            <p>Don't have an account? <a href="#">Sign Up</a></p>  
+            <p>Don't have an account?<br/> <a href="#" onClick={handleClick}>Sign up</a></p>  
             <p className="error">{error}</p> 
       </form>
       <h5 className="bottom-line">Project Dedicated to Suraj Neupane.</h5>
