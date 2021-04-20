@@ -47,16 +47,54 @@ form div.form-inputs, form p, input[type="submit"] {
 p a {
   color: dodgerblue;
 }
-p.error {
-  color: rgba(255,0,0,0.75);
+/* ================ Credentials Error Start =============== */
+p.error-msg {
+  color: #5a050c;
+  font-size:0.8rem;
+  margin-top: -0.025rem;
 }
-.bottom-line {
-position: fixed;
-bottom: 0; left:0;
-text-align: center;
-font: italic 0.8rem 'Roboto', sans-serif;
-width: 100%;
+/* ================ Credentials Error End =============== */
+
+/* ================ SignUp Error Start =============== */
+div.signup-error{
+  position:absolute;
+  top:0;left:0;
+  right:0;bottom:0;
+  background-color: rgba(0, 0, 0, 0.8);
 }
+div.signup-error div{
+  position: inherit;
+  width: 100%;
+  max-width: 230px;
+  top:20%;left: 50%;
+  transform: translate(-50%, -20%);
+}
+div.signup-error img{
+  display: block;
+  margin: auto;
+  width: 100px;
+  height: 100px;
+}
+div.signup-error p{
+  text-align: center;
+  margin-bottom: 1rem;
+}
+div.signup-error button{
+  display: block;
+  margin: auto;
+  font-size: 1rem;
+  padding: 0.4rem 1.2rem;
+  border-radius: 15px;
+  outline: none;
+  border: none;
+  background-color: #808080;
+  font-family: 'Roboto', sans-serif;
+  color:#f1f1f1;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+/* ================ SignUp Error Start =============== */
+
 @media only screen and (max-width: 768px) {
   input[type="email"], input[type="password"], input[type="submit"]{
     font-size: 16px;
