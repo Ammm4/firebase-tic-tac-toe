@@ -4,12 +4,15 @@ import Game from '../game/game';
 import RequestIn from './requestIn'
 import RequestOut from './requestOut';
 import Playersboard from './playersBoard';
-import database from '../../firebase/config';
+import {database} from '../../firebase/config';
 import './homepage.css';
 
-const Homepage = ({signOut, user}) => {
-  const players = ['Monk', 'Fighter', 'Harami', 'Player1', 'Player2', 'Player3'];
+
+const Homepage = ({signOut, userId}) => {
+  
   //================= States Start ===========================//
+  const [username, setUsername] = useState("");
+  const [players, setPlayers] = useState([]);
   const [error,setError] = useState("");
   const [err,setErr] = useState("");
   const [requestOut, setRequestOut] = useState(false);
@@ -22,13 +25,42 @@ const Homepage = ({signOut, user}) => {
 
 //================== Sign-Out Start ========================//
   const handleClick = () => {
-    signOut()
+    signOut(userId);
   }
 //================== Sign-Out End ===========================//
 
+useEffect(() => {
+    function playerInfo(userID,username){
+      return {
+        userId: userID,
+        username: username
+      }
+    }
+    let ref = database.ref("users");
+    ref.on('value', (snapshot) => {
+           let arr = [];
+           snapshot.forEach(function(childSnapshot){             
+                if(childSnapshot.key === userId){
+                   setUsername(childSnapshot.val().username)
+                } else{
+                   let data = playerInfo(childSnapshot.key, childSnapshot.val().username);
+                   arr.push(data)
+                }              
+           })
+         setPlayers(arr);
+         })
+       return (() => ref.off())
+    }, [userId]);
+
 //================== Request Listener Start ====================//
   useEffect(() => {
-   database.ref(`users/${user.username}/requestIn`).on('value', (snapshot) => {
+   database.ref(`users/${userId}/requestIn`).on('value', (snapshot) => {
+     function opponentInfo(Id,username) {
+        return {
+          userId: Id,
+          username: username
+        }
+     }
      if(snapshot.val() === null){
             setPlayersBoard(true);
             setRequestIn(false)
@@ -36,41 +68,48 @@ const Homepage = ({signOut, user}) => {
             setOpponent("");
             setGameKey("");
      } else if(snapshot.child('status').val() === "pending") {
-            if(snapshot.child('sender').val() === user.username){
+            if(snapshot.child('senderId').val() === userId){
                return
             } else {
               let gameKey = snapshot.child('gameKey').val();
-              let sender = snapshot.child('sender').val();
+              let senderName = snapshot.child('senderName').val();
+              let senderId = snapshot.child('senderId').val();
+              let opponentData = opponentInfo(senderId,senderName)             
               setGameKey(gameKey);
-              setOpponent(sender);
+              setOpponent(opponentData)     
               setPlayersBoard(false);
               setRequestIn(true)
             }
             
      } else if(snapshot.child('status').val() === "accept") {
-              let gameKey = snapshot.child('gameKey').val();           
-              if(snapshot.child('sender').val() !== user.username){
-                let sender = snapshot.child('sender').val();
+              let gameKey = snapshot.child('gameKey').val();     
+              if(snapshot.child('senderId').val() !== userId){
+                let senderName = snapshot.child('senderName').val();
+                let senderId = snapshot.child('senderId').val();
+                let opponentData = opponentInfo(senderId,senderName);
                 setGameKey(gameKey);
-                setRequestOut(false);
-                setOpponent(sender);
+                setRequestOut(false);               
+                setOpponent(opponentData)
+                setRequestIn(false);
                 setPlayersBoard(false);
                 setGameBoard(true)
-            } else {
-                let sender = snapshot.child('to').val();
+            } else {          
+                let senderName = snapshot.child('toName').val();
+                let senderId = snapshot.child('toId').val();
+                let opponentData = opponentInfo(senderId,senderName);
                 setGameKey(gameKey);
                 setRequestOut(false);
-                setOpponent(sender);
+                setOpponent(opponentData)
                 setPlayersBoard(false);
                 setGameBoard(true)
             }
      } else if(snapshot.child('status').val() === "decline") {
-          let sender = snapshot.child('to').val();
+          let sender = snapshot.child('toName').val();
           setError(`${sender} declined!`)
      }
     })
-    return () => {(database.ref(`users/${user.username}/requestIn`).off())}
-   },[]);
+    return () => {(database.ref(`users/${userId}/requestIn`).off())}
+   },[userId]);
 
 //================== Request Listener End ====================//
 
@@ -78,10 +117,10 @@ const Homepage = ({signOut, user}) => {
 
 //================  Accept/Decline Invitation Start ================//
 const playGame = (opponent, gameKey) => {
-  let obj = requestDetails(gameKey,  opponent, user.username, "accept");
-  let valReturn;
-  database.ref(`users/${opponent}/requestIn`).transaction(function(currentData){                   
-                  if (currentData && currentData.sender === opponent && currentData.to === user.username){
+  let obj = requestDetails(gameKey, opponent.userId, opponent.username, userId, username, "accept");  
+  let valReturn; 
+    database.ref(`users/${opponent.userId}/requestIn`).transaction(function(currentData){               
+                  if (currentData && currentData.senderId === opponent.userId && currentData.toId === userId){
                     valReturn = true;
                     return obj
                   } else {
@@ -95,22 +134,21 @@ const playGame = (opponent, gameKey) => {
                                   setErr(error)
                                 } else {
                                   if(valReturn) {
-                                    setOpponent(opponent);
-                                    setGameBoard(true)
-                                    database.ref(`users/${user.username}/requestIn`).update(obj);
+                                      setOpponent(opponent);
+                                      setGameBoard(true);
+                                      database.ref(`users/${userId}/requestIn`).update(obj);
                                   } else {
-                                    setErr(`${opponent} is unavailable!`)
+                                     setErr(`${opponent.username} is unavailable!`)
                                   }                               
                                                             
                                 }
                     });
- 
 }
 
 const rejectGame = (opponent, gameKey) => {
-  let obj = requestDetails(gameKey, opponent, user.username, "decline");
-  database.ref(`users/${opponent}/requestIn`).transaction(function(currentData){
-            if (currentData && currentData.sender === opponent && currentData.to === user.username){
+  let obj = requestDetails(gameKey, opponent.userId, opponent.username, userId, username, "decline");
+    database.ref(`users/${opponent.userId}/requestIn`).transaction(function(currentData){
+            if (currentData && currentData.senderId === opponent.userId && currentData.toId === userId){
               return obj
             } else {             
             return null
@@ -118,8 +156,8 @@ const rejectGame = (opponent, gameKey) => {
             }, function(error, committed, snapshot){
                           if(error) {                          
                             setErr(error)
-                          }  else { 
-                            database.ref(`users/${user.username}/requestIn`).remove();
+                          }  else {
+                            database.ref(`users/${userId}/requestIn`).remove();                            
                             setRequestIn(false);                                                                                                                                               
                           }
             });
@@ -127,15 +165,15 @@ const rejectGame = (opponent, gameKey) => {
 }
 //=================  Accept/Decline End ====================//
 const requestAgain = (opponent) =>{
-  database.ref(`users/${user.username}/requestIn`).remove();
-  setError("")
+  database.ref(`users/${userId}/requestIn`).remove();
+  setError("");
   sendRequest(opponent);
 }
 //================== Send/Cancel Request(Invite) Start ====================//
 const sendRequest = (opponent) => {
-      let gameAccessKey = database.ref('Games').push(gameSetup(user.username,opponent)).key;
-      let obj = requestDetails(gameAccessKey, user.username, opponent, "pending");
-      database.ref(`users/${user.username}/requestIn`).transaction(function(currentData){
+       let gameAccessKey = database.ref('Games').push(gameSetup(username,opponent.username)).key;
+       let obj = requestDetails(gameAccessKey, userId, username, opponent.userId, opponent.username, "pending");
+          database.ref(`users/${userId}/requestIn`).transaction(function(currentData){
                   if (currentData === null){
                     return obj
                   } else {
@@ -143,17 +181,17 @@ const sendRequest = (opponent) => {
                   }
                 }, function(error, committed){
                                 if(error) {
-                                  setRequestOut(true);
-                                  setPlayersBoard(false);
-                                  setOpponent(opponent)
-                                  setError(error);
+                                    setOpponent(opponent);
+                                    setRequestOut(true);
+                                    setPlayersBoard(false);                                   
+                                    setError(error);
                                 } else if (!committed) {
-                                  setRequestOut(true);
-                                  setPlayersBoard(false);
-                                  setOpponent(opponent);
-                                  setError("Something went wrong!!");
-                                } else {                                
-                                   database.ref(`users/${opponent}/requestIn`).transaction(function(currentData){
+                                    setOpponent(opponent);
+                                    setRequestOut(true);
+                                    setPlayersBoard(false);                                   
+                                    setError("Something went wrong!!");
+                                } else {                                                                
+                                    database.ref(`users/${opponent.userId}/requestIn`).transaction(function(currentData){
                                     if (currentData === null){
                                       return obj
                                     } else {
@@ -161,19 +199,19 @@ const sendRequest = (opponent) => {
                                     }
                                   }, function(error, committed){
                                        if (error) {
+                                        setOpponent(opponent)
                                         setRequestOut(true);
                                         setPlayersBoard(false);
-                                        setError(error);
-                                        setOpponent(opponent)
+                                        setError(error);                                       
                                        }else if (!committed) {
-                                        setRequestOut(true);
-                                        setPlayersBoard(false);
-                                        setError(`${opponent} is unavailable!`)
                                         setOpponent(opponent);
-                                      } else {
                                         setRequestOut(true);
                                         setPlayersBoard(false);
+                                        setError(`${opponent.username} is unavailable!`)                                                                              
+                                      } else {
                                         setOpponent(opponent)
+                                        setRequestOut(true);
+                                        setPlayersBoard(false);                                       
                                       }
                                     })
                                   }
@@ -183,27 +221,27 @@ const sendRequest = (opponent) => {
         }
       
 const cancelInvitation = () => {
-  database.ref(`users/${user.username}/requestIn`).remove();
+  database.ref(`users/${userId}/requestIn`).remove();
   setError("");
+  setOpponent();
   setRequestOut(false);
-  setPlayersBoard(true);
-  setOpponent()
+  setPlayersBoard(true); 
 }
 
 const closeRequestIn = () => {
-  database.ref(`users/${user.username}/requestIn`).remove();
+  database.ref(`users/${userId}/requestIn`).remove();
   setErr("");
-  setRequestIn(false);
-  setPlayersBoard(true);
   setOpponent()
+  setRequestIn(false);
+  setPlayersBoard(true); 
 }
 
 //================== Stop Playing Start ====================//
   const hideGameBoard = () => {
-    database.ref(`users/${user.username}/requestIn`).remove();
-    setPlayersBoard(true);
-    setGameBoard(false);
+    database.ref(`users/${userId}/requestIn`).remove();
     setOpponent()
+    setPlayersBoard(true);
+    setGameBoard(false);  
   }
 //================== Stop Playing End ====================//
   
@@ -211,14 +249,39 @@ const closeRequestIn = () => {
   return (
     <div className="homepage">
         <div className="nav">
-            <div className="user-part">Hello {user.username}</div>
-            <div className="signOut"><button onClick={handleClick}><i class="fas fa-sign-out-alt"></i> Sign Out</button></div>
+            <div className="user-part">Hello {username}</div>
+            <div className="signOut">
+                      <button onClick={handleClick}>
+                      <i className="fas fa-sign-out-alt"></i> Sign Out
+                      </button>
+            </div>
         </div>
-        {requestOut && <RequestOut opponent={opponent} cancelInvitation={cancelInvitation} requestAgain={requestAgain} error={error}/>}
-        {requestIn && <RequestIn sender={opponent} playGame={playGame} rejectGame={rejectGame} closeRequestIn={closeRequestIn} gameKey={gameKey} err={err}/>}
+        {requestOut && <RequestOut 
+                           opponent={opponent} 
+                           cancelInvitation={cancelInvitation} 
+                           requestAgain={requestAgain} 
+                           error={error}
+                        />}
+        {requestIn && <RequestIn 
+                            sender={opponent} 
+                            playGame={playGame} 
+                            rejectGame={rejectGame} 
+                            closeRequestIn={closeRequestIn} 
+                            gameKey={gameKey} 
+                            err={err}
+                        />}
         <div className="main-area">
-            {playersBoard && <Playersboard players={players} sendRequest={sendRequest}/>}
-            {gameBoard && <Game user={user} opponent={opponent} hideGameBoard={hideGameBoard} gameKey={gameKey} /> } 
+            {playersBoard && <Playersboard 
+                                  players={players} 
+                                  sendRequest={sendRequest}
+                              />}
+            
+            {gameBoard && <Game 
+                                user={username} 
+                                opponent={opponent.username} 
+                                hideGameBoard={hideGameBoard} 
+                                gameKey={gameKey} 
+                           />} 
         </div>
        
     </div>

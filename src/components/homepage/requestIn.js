@@ -11,8 +11,9 @@ const ShowError = ({err, closeRequestIn}) => {
 const ShowRequestIn = ({sender,playGame,rejectGame, gameKey}) => {
   return(
     <div>
-        <p>{sender} sent you an invitation.</p>
-        <button onClick={() => playGame(sender, gameKey)}>Join</button><button onClick={() => rejectGame(sender, gameKey)}>Decline</button>
+        <p>{sender.username} sent you an invitation.</p> 
+        <button onClick={() => playGame(sender, gameKey)}>Join</button>
+        <button onClick={() => rejectGame(sender, gameKey)}>Decline</button>
     </div>
   )
 }
@@ -21,7 +22,16 @@ const RequestIn = ({sender,playGame,rejectGame, closeRequestIn, gameKey,err}) =>
 
   return(
     <div className="invite-form">
-      {err? <ShowError err={err} closeRequestIn={closeRequestIn}/> : <ShowRequestIn sender={sender} playGame={playGame} rejectGame={rejectGame} gameKey={gameKey}/>}
+      {err? <ShowError 
+                  err={err} 
+                  closeRequestIn={closeRequestIn}
+               /> : 
+             <ShowRequestIn 
+                  sender={sender} 
+                  playGame={playGame} 
+                  rejectGame={rejectGame} 
+                  gameKey={gameKey}
+                />}
     </div>
   )
 }

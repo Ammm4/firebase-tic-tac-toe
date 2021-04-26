@@ -15,7 +15,7 @@ const ShowSentRequest = ({opponent, cancelInvitation}) => {
   return(<div>
           <img src={Img1} alt="loading"/>
           <p>Invitation Sent !!</p>
-          <p>Waiting for {opponent} to join...</p>
+          <p>Waiting for {opponent.username} to join...</p>       
           <button onClick={cancelInvitation}>Cancel</button>
         </div>)
 }
@@ -24,7 +24,7 @@ const RequestOut = ({opponent, cancelInvitation, requestAgain, error}) => {
   
   return (
     <div className="invite-form">
-      <span className="close-invite-form" onClick={() => cancelInvitation()}><i class="fas fa-times fa-2x"></i></span>
+      <span className="close-invite-form" onClick={() => cancelInvitation()}><i className="fas fa-times fa-2x"></i></span>
       {
         error? <ShowError error={error} opponent={opponent} requestAgain={requestAgain}/>: <ShowSentRequest opponent={opponent} cancelInvitation={cancelInvitation}/>
       }

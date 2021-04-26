@@ -1,32 +1,17 @@
-import {React, useState, useEffect} from 'react';
-import SignInForm from './components/signInForm/signIn';
-import SignUpForm from './components/signUpForm/signUp';
+import {React, useState} from 'react';
+import SignInForm from './components/signIn';
+import SignUpForm from './components/signUp';
 import Homepage from './components/homepage/homepage';
-import database from './firebase/config';
+import {database, firebaseAuth} from './firebase/config';
 import './App.css';
 
-
+console.log(process.env.REACT_APP_FIREBASE_DATABASE_URL);
 function App() {
-  const [users, setUsers] = useState(null);
-
+  
   const [isLoggedIn, setisLoggedIn] = useState(false);
   const [logIn, setLogIn] = useState(true);
   const [signUp, setSignUp] = useState(false);
-
   const [user, setUser] = useState(null);
-
-  const [error, setError] = useState("");
-  
-  useEffect( () => {
-    let arr = [];
-    let ref = database.ref("users");
-    ref.once('value', (snapshot) => {
-           snapshot.forEach(function(childSnapshot){
-                 arr.push(childSnapshot.val())
-           })
-         })
-       setUsers(arr);
-    }, []);
 
  const showSignUpForm = () => {
     setLogIn(false);
@@ -36,28 +21,26 @@ function App() {
   setSignUp(false);
   setLogIn(true);
 }
-  const signIn = (logInDetails) => {
-    users.forEach(user => {
-         if (logInDetails.email === user.email && logInDetails.password === user.password){         
-           setisLoggedIn(true);
-           setUser(user); 
-           setError("");
-         }    
-    })
-    if (!isLoggedIn) setError("Invalid email or password!")
-  }
 
-  const signOut = () => {
-   setUser(null);
-   setError("")
+const showHomepage = (user) => {
+  setUser(user);
+  setLogIn(false);
+  setisLoggedIn(true)
+  
+}
+
+  const signOut = (user) => {
+   database.ref(`onlineUsers/${user}`).remove();
+   firebaseAuth.signOut();
+   setisLoggedIn(false);
+   setLogIn(true);
   }
 
   return (
     <div className="app-wrap">
-      {logIn && <SignInForm signIn={signIn} error={error} showSignUpForm={showSignUpForm}/>}
+      {logIn && <SignInForm showSignUpForm={showSignUpForm} showHomepage={showHomepage}/>}
       {signUp && <SignUpForm showSignInForm={showSignInForm} />}
-      {isLoggedIn && <Homepage signOut={signOut} user={user} />}
-      {/* {(user)? <Homepage signOut={signOut} user={user} /> : <SignInForm signIn={signIn} error={error}/>} */}
+      {isLoggedIn && <Homepage signOut={signOut} userId={user} />}
     </div>
   );
 }

@@ -28,11 +28,14 @@ const gameSetup = (sender,opponent) => {
           }
    }
 }
-const requestDetails = (gameAccessKey, sender, reciever, status) => {
+
+const requestDetails = (gameAccessKey, senderId, senderName, recieverId, recieverName, status) => {
       return {     
                   gameKey: gameAccessKey,
-                  sender: sender,
-                  to: reciever,
+                  senderId: senderId,
+                  senderName: senderName,                 
+                  toId: recieverId,
+                  toName: recieverName,
                   status: status     
       }
 }

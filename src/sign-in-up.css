@@ -27,7 +27,7 @@ form h2 {
   text-align: center;
 }
 
-input[type="submit"], input[type="email"], input[type="password"]{
+input[type="submit"], input[type="email"], input[type="password"], input[type="text"]{
   outline: none;
   border: none;
   display: inline-block;
@@ -46,7 +46,25 @@ form div.form-inputs, form p, input[type="submit"] {
 }
 p a {
   color: dodgerblue;
+  font-size:0.8rem;
 }
+/* ================================ SIGN IN Start ===========================*/
+p.signin-error {
+  color: #5a050c;
+  font-size:0.8rem;
+  margin-top: -0.025rem;
+}
+.bottom-line {
+position: fixed;
+bottom: 0; left:0;
+text-align: center;
+font: italic 0.8rem 'Roboto', sans-serif;
+width: 100%;
+}
+/* ================================ SIGN IN End ============================= */
+
+
+/* ================================ SIGN UP Start ============================= */
 /* ================ Credentials Error Start =============== */
 p.error-msg {
   color: #5a050c;
@@ -94,9 +112,9 @@ div.signup-error button{
   cursor: pointer;
 }
 /* ================ SignUp Error Start =============== */
-
+/* ================================ SIGN UP End =============== */
 @media only screen and (max-width: 768px) {
-  input[type="email"], input[type="password"], input[type="submit"]{
+  input[type="email"], input[type="password"], input[type="submit"], input[type="text"]{
     font-size: 16px;
   }
 }

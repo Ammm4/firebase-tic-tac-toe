@@ -1,13 +1,31 @@
 import React, {useState} from 'react';
-import './signIn.css';
+import {database, firebaseAuth} from '../firebase/config';
+import '../sign-in-up.css';
 
 
-function SignInForm({signIn, error, showSignUpForm}){
- const [signInDetails, setSignInDetails] = useState({email:"", password:""})
+function SignInForm({showSignUpForm,showHomepage}){
+ const [signInDetails, setSignInDetails] = useState({email:"", password:""});
+ const [error, setError] = useState("")
 
  const handleSubmit = (event) => {
        event.preventDefault();
-       signIn(signInDetails)
+       firebaseAuth.signInWithEmailAndPassword(signInDetails.email, signInDetails.password)
+       .then((userCredential) => {
+         var user = userCredential.user; 
+       })
+       .catch((error) => {
+         var errorCode = error.code;
+         var errorMsg = error.message;
+         console.log(errorMsg)
+         setError(errorCode);
+       });
+       firebaseAuth.onAuthStateChanged(function(user) {
+        if (user) {
+          showHomepage(user.uid);
+          database.ref('onlineUsers').update({[user.uid]:true})
+        }
+       });
+      
  }
  const handleClick = (e) => {
    e.preventDefault();
@@ -31,7 +49,7 @@ function SignInForm({signIn, error, showSignUpForm}){
             
             <input type="submit" value="Sign In"/>
             <p>Don't have an account?<br/> <a href="#" onClick={handleClick}>Sign up</a></p>  
-            <p className="error">{error}</p> 
+            <p className="signin-error">{error}</p> 
       </form>
       <h5 className="bottom-line">Project Dedicated to Suraj Neupane.</h5>
     </div>

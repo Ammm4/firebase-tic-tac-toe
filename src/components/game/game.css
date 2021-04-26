@@ -4,14 +4,43 @@
 }
 
 .gameArea {
-  position: relative;
-  margin-top: 3rem;
+  position: absolute;
+  top:0; left:0;
+  width: 100%;
+  min-height: 100%;
+  background-color: rgba(0,0,0,0.9);
+  padding-bottom: 1.8rem;
 }
-/* ================ Turn Display and Result Display Start =============== */
+
+.fa-times {
+  position: absolute;
+  right: 5px;
+}
+
+/* =============== ScoreBoard Area Start  =========== */
+
+.scoreboard{
+  margin-top: 1.25rem;
+  text-align: center;
+  letter-spacing: 2px;
+}
+.score-details {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.scoreboard h5 {
+  padding: 3px;
+}
+
+/* =============== ScoreBoard Area End  =========== */
+
+/* ================ Turn and Result Display Start =============== */
 
 .score-area {
   width:250px;
-  margin: 1.8rem auto 1rem auto;
+  margin: 1.5rem auto 1rem auto;
   text-align: center;
   font-size: 1.4rem;
   font-weight: bold;
@@ -38,7 +67,7 @@
 .score-area button {
   display: inline-block;
   font-size: 1.05rem;
-  padding: 0.5rem 1.2rem;
+  padding: 0.4rem 1rem;
   border-radius: 15px;
   outline: none;
   border: none;
@@ -60,6 +89,9 @@
   align-items: center;
 }
 /* ================ Turn Display and Result Display End =============== */
+
+/* ================ Tic Tac Toe Board Start =============== */
+
 .game-board {
   position: relative;
   margin:auto;
@@ -81,6 +113,19 @@
   left:0;bottom:0;
  
 }
+
+.square {
+  position: relative;
+  width: var(--square-size);
+  height: var(--square-size);
+  background-color: #f9f9f9;
+  border: 1px solid grey;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* ================ Tic Tac Toe Board End =============== */
 
 /*============== Winning Line Start ====================*/
 .leftDiagonal, .rightDiagonal {
@@ -156,17 +201,7 @@ top: 175px;;
   }
 /*============== Winning Line End ====================*/
 
-.square {
-  position: relative;
-  width: var(--square-size);
-  height: var(--square-size);
-  background-color: #f9f9f9;
-  border: 1px solid grey;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 /* ==================== Cross and Circles Design ============== */
 
 .square.x-sign::before,
