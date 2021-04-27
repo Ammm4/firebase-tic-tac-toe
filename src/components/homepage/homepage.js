@@ -54,61 +54,51 @@ useEffect(() => {
 
 //================== Request Listener Start ====================//
   useEffect(() => {
-   database.ref(`users/${userId}/requestIn`).on('value', (snapshot) => {
-     function opponentInfo(Id,username) {
-        return {
-          userId: Id,
-          username: username
-        }
-     }
+        function opponentInfo(Id,username) {
+          return {
+            userId: Id,
+            username: username
+          }
+    }
+   database.ref(`users/${userId}/requestIn`).on('value', (snapshot) => {   
      if(snapshot.val() === null){
             setPlayersBoard(true);
             setRequestIn(false)
             setRequestOut(false);
             setOpponent("");
             setGameKey("");
-     } else if(snapshot.child('status').val() === "pending") {
-            if(snapshot.child('senderId').val() === userId){
-               return
-            } else {
-              let gameKey = snapshot.child('gameKey').val();
-              let senderName = snapshot.child('senderName').val();
-              let senderId = snapshot.child('senderId').val();
-              let opponentData = opponentInfo(senderId,senderName)             
-              setGameKey(gameKey);
-              setOpponent(opponentData)     
-              setPlayersBoard(false);
-              setRequestIn(true)
-            }
             
-     } else if(snapshot.child('status').val() === "accept") {
-              let gameKey = snapshot.child('gameKey').val();     
-              if(snapshot.child('senderId').val() !== userId){
-                let senderName = snapshot.child('senderName').val();
-                let senderId = snapshot.child('senderId').val();
-                let opponentData = opponentInfo(senderId,senderName);
-                setGameKey(gameKey);
-                setRequestOut(false);               
-                setOpponent(opponentData)
-                setRequestIn(false);
-                setPlayersBoard(false);
-                setGameBoard(true)
-            } else {          
-                let senderName = snapshot.child('toName').val();
-                let senderId = snapshot.child('toId').val();
-                let opponentData = opponentInfo(senderId,senderName);
-                setGameKey(gameKey);
-                setRequestOut(false);
-                setOpponent(opponentData)
-                setPlayersBoard(false);
-                setGameBoard(true)
-            }
-     } else if(snapshot.child('status').val() === "decline") {
-          let sender = snapshot.child('toName').val();
-          setError(`${sender} declined!`)
-     }
-    })
-    return () => {(database.ref(`users/${userId}/requestIn`).off())}
+     } else {
+            let gameKey = snapshot.child('gameKey').val();
+            let senderName = snapshot.child('senderName').val();
+            let senderId = snapshot.child('senderId').val();
+            let toName = snapshot.child('toName').val();
+            let toId = snapshot.child('toId').val(); 
+            let status = snapshot.child('status').val();
+            setGameKey(gameKey)
+                if (status === "pending") {
+                      if(senderId === userId){
+                        return
+                      } else {
+                          let opponentData = opponentInfo(senderId,senderName)             
+                          setOpponent(opponentData)     
+                          setPlayersBoard(false);
+                          setRequestIn(true);
+                      }
+                  } else if (status === "accept"){
+                          let opponentData = senderId !== userId? opponentInfo(senderId,senderName): opponentInfo(toId,toName);                   
+                          setRequestIn(false);
+                          setRequestOut(false);                                                      
+                          setOpponent(opponentData)
+                          setPlayersBoard(false);
+                          setGameBoard(true);
+                   } else {
+                            setGameKey();
+                            setError(`${toName} declined!`)
+                          }
+       }
+       return () => {(database.ref(`users/${userId}/requestIn`).off())}
+    })       
    },[userId]);
 
 //================== Request Listener End ====================//
