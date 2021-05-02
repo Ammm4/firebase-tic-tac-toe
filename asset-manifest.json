@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/firebase-tic-tac-toe/static/css/main.7d6c28d1.chunk.css",
-    "main.js": "/firebase-tic-tac-toe/static/js/main.8326f493.chunk.js",
-    "main.js.map": "/firebase-tic-tac-toe/static/js/main.8326f493.chunk.js.map",
+    "main.css": "/firebase-tic-tac-toe/static/css/main.676eae15.chunk.css",
+    "main.js": "/firebase-tic-tac-toe/static/js/main.1a4b48a7.chunk.js",
+    "main.js.map": "/firebase-tic-tac-toe/static/js/main.1a4b48a7.chunk.js.map",
     "runtime-main.js": "/firebase-tic-tac-toe/static/js/runtime-main.94a98c51.js",
     "runtime-main.js.map": "/firebase-tic-tac-toe/static/js/runtime-main.94a98c51.js.map",
     "static/js/2.2912d24d.chunk.js": "/firebase-tic-tac-toe/static/js/2.2912d24d.chunk.js",
     "static/js/2.2912d24d.chunk.js.map": "/firebase-tic-tac-toe/static/js/2.2912d24d.chunk.js.map",
     "index.html": "/firebase-tic-tac-toe/index.html",
-    "static/css/main.7d6c28d1.chunk.css.map": "/firebase-tic-tac-toe/static/css/main.7d6c28d1.chunk.css.map",
+    "static/css/main.676eae15.chunk.css.map": "/firebase-tic-tac-toe/static/css/main.676eae15.chunk.css.map",
     "static/js/2.2912d24d.chunk.js.LICENSE.txt": "/firebase-tic-tac-toe/static/js/2.2912d24d.chunk.js.LICENSE.txt",
     "static/media/homepage.css": "/firebase-tic-tac-toe/static/media/bg.c3053553.gif",
     "static/media/oops.7b3fa3e8.gif": "/firebase-tic-tac-toe/static/media/oops.7b3fa3e8.gif",
@@ -18,7 +18,7 @@
   "entrypoints": [
     "static/js/runtime-main.94a98c51.js",
     "static/js/2.2912d24d.chunk.js",
-    "static/css/main.7d6c28d1.chunk.css",
-    "static/js/main.8326f493.chunk.js"
+    "static/css/main.676eae15.chunk.css",
+    "static/js/main.1a4b48a7.chunk.js"
   ]
 }
