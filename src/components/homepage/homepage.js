@@ -28,14 +28,14 @@ const Homepage = ({signOut, userId}) => {
     signOut(userId);
   }
 //================== Sign-Out End ===========================//
+function playerInfo(userID,username){
+  return {
+    userId: userID,
+    username: username
+  }
+}
 
-useEffect(() => {
-    function playerInfo(userID,username){
-      return {
-        userId: userID,
-        username: username
-      }
-    }
+useEffect(() => {  
     let ref = database.ref("users");
     ref.on('value', (snapshot) => {
            let arr = [];
@@ -54,12 +54,6 @@ useEffect(() => {
 
 //================== Request Listener Start ====================//
   useEffect(() => {
-        function opponentInfo(Id,username) {
-          return {
-            userId: Id,
-            username: username
-          }
-    }
    database.ref(`users/${userId}/requestIn`).on('value', (snapshot) => {   
      if(snapshot.val() === null){
             setPlayersBoard(true);
@@ -80,13 +74,13 @@ useEffect(() => {
                       if(senderId === userId){
                         return
                       } else {
-                          let opponentData = opponentInfo(senderId,senderName)             
+                          let opponentData = playerInfo(senderId,senderName)             
                           setOpponent(opponentData)     
                           setPlayersBoard(false);
                           setRequestIn(true);
                       }
                   } else if (status === "accept"){
-                          let opponentData = senderId !== userId? opponentInfo(senderId,senderName): opponentInfo(toId,toName);                   
+                          let opponentData = senderId !== userId? playerInfo(senderId,senderName): playerInfo(toId,toName);                   
                           setRequestIn(false);
                           setRequestOut(false);                                                      
                           setOpponent(opponentData)
@@ -169,16 +163,13 @@ const sendRequest = (opponent) => {
                   } else {
                     return
                   }
-                }, function(error, committed){
-                                if(error) {
-                                    setOpponent(opponent);
-                                    setRequestOut(true);
-                                    setPlayersBoard(false);                                   
+                }, function(error, committed){              
+                      setOpponent(opponent);
+                      setRequestOut(true);
+                      setPlayersBoard(false);                    
+                                if(error) {                                  
                                     setError(error);
-                                } else if (!committed) {
-                                    setOpponent(opponent);
-                                    setRequestOut(true);
-                                    setPlayersBoard(false);                                   
+                                } else if (!committed) {                                  
                                     setError("Something went wrong!!");
                                 } else {                                                                
                                     database.ref(`users/${opponent.userId}/requestIn`).transaction(function(currentData){
@@ -189,20 +180,10 @@ const sendRequest = (opponent) => {
                                     }
                                   }, function(error, committed){
                                        if (error) {
-                                        setOpponent(opponent)
-                                        setRequestOut(true);
-                                        setPlayersBoard(false);
                                         setError(error);                                       
                                        }else if (!committed) {
-                                        setOpponent(opponent);
-                                        setRequestOut(true);
-                                        setPlayersBoard(false);
                                         setError(`${opponent.username} is unavailable!`)                                                                              
-                                      } else {
-                                        setOpponent(opponent)
-                                        setRequestOut(true);
-                                        setPlayersBoard(false);                                       
-                                      }
+                                      } 
                                     })
                                   }
                                                             

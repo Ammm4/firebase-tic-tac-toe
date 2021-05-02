@@ -7,7 +7,7 @@ const Playersboard = ({players,sendRequest}) => {
   return (
         <div className="playersDisplay">
                       <h1>Invite</h1>
-                      <div><span><i className="fas fa-users"></i> All Players</span> </div>
+                      <div style={{"text-align":"center","margin-top":"0.7rem"}}><span><i className="fas fa-users"></i> All Players</span> </div>
                         <ul className="playersList">
                           {players.map((player,index) => {
                             return (<Players player={player} key={index} sendRequest={sendRequest} />)

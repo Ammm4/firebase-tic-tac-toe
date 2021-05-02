@@ -21,12 +21,22 @@ form {
   max-width: 230px;
   margin: auto;
   color: #f3f3f3;
+  border-radius: 12px;
 }
 
 form h2 {
   text-align: center;
 }
-
+.log-in-avatar{
+  display: block;
+  width: 50px;
+  height: 50px;
+  margin: 0.2rem auto;
+}
+label{
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
 input[type="submit"], input[type="email"], input[type="password"], input[type="text"]{
   outline: none;
   border: none;
@@ -34,6 +44,7 @@ input[type="submit"], input[type="email"], input[type="password"], input[type="t
   width: 100%;
   margin-top: 0.3rem;
   padding: .5rem;
+  border-radius: 8px;
 }
 
 input[type="submit"] {
@@ -41,8 +52,11 @@ input[type="submit"] {
 -moz-appearance: none;
 appearance: none;
 }
-form div.form-inputs, form p, input[type="submit"] {
-  margin-top: 1rem;
+form div.form-inputs, form p {
+  margin-top: 0.75rem;
+}
+input[type="submit"]{
+  margin-top: 1.25rem;
 }
 p a {
   color: dodgerblue;

@@ -138,7 +138,7 @@ import './game.css';
                   })
               }
              }
-             ,[]);
+             ,[cellRef]);
 
         return(
           <div className="gameArea">

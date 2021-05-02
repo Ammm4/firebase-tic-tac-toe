@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {database, firebaseAuth} from '../firebase/config';
+import Img1 from '../images/user.png';
 import '../sign-in-up.css';
 
 
@@ -38,6 +39,7 @@ function SignInForm({showSignUpForm,showHomepage}){
             <div className="form-heading">
                 <h2>Log In</h2>
             </div>
+            <img src={Img1} alt="LogIn Avatar" className="log-in-avatar"/>
             <div className="form-inputs">
                 <label htmlFor="email">Email:</label>
                 <input type="email" name="email" id="email" onChange={e => setSignInDetails({...signInDetails, email: e.target.value})} value={setSignInDetails.email}/>              
