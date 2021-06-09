@@ -51,13 +51,12 @@ input[type="submit"] {
 -webkit-appearance: none;
 -moz-appearance: none;
 appearance: none;
+margin-top: 1.25rem;
 }
 form div.form-inputs, form p {
   margin-top: 0.75rem;
 }
-input[type="submit"]{
-  margin-top: 1.25rem;
-}
+
 p a {
   color: dodgerblue;
   font-size:0.8rem;

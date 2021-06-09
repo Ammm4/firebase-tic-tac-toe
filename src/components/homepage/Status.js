@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Status = ({status}) => {
+const Status = ({ status }) => {
   return (
-    <span className="status">{status}</span>
+    <span className="status">{ status }</span>
   )
 }
 

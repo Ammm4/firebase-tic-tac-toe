@@ -8,12 +8,11 @@ const Players = ({player, sendRequest}) => {
   const [status, setStatus] = useState();
   useEffect(() => {
     database.ref('onlineUsers').on('value', (snapshot) => {
-         if(snapshot.child(player.userId).exists()){
-            setStatus('Online')
-          } else {
-            setStatus('Offline')
-          }
-
+      if(snapshot.child(player.userId).exists()) {
+        setStatus('Online')
+      } else {
+        setStatus('Offline')
+      }
     })
     return (() => database.ref('onlineUsers').off('value', (snapshot) => {
       if(snapshot.child(player.userId).exists()) {
@@ -22,15 +21,15 @@ const Players = ({player, sendRequest}) => {
         setStatus('Offline')
       }
 }))
-  },[player])
-  return(<li>
-            <div className="playerName">
-                      <span>{player.username}</span> 
-                      <Status status={status}/> 
-            </div> 
-            <Button sendRequest={() => sendRequest(player)}/>
+  }, [player])
+  return (
+    <li>
+      <div className="playerName">
+        <span>{player.username}</span> 
+        <Status status={status}/> 
+      </div> 
+      <Button sendRequest={ () => sendRequest(player) }/>
     </li>)
-
 }
 
 export default Players;

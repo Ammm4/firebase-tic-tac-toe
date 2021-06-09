@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Button = ({sendRequest}) => {
+const Button = ({ sendRequest }) => {
   return (
-    <button onClick={()=> sendRequest()}>Invite</button>
+    <button onClick={ ()=> sendRequest() }>Invite</button>
   )
 }
 

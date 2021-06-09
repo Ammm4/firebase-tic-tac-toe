@@ -1,48 +1,45 @@
-import {React, useState} from 'react';
+import { React, useEffect, useState } from 'react';
 import SignInForm from './components/signIn';
 import SignUpForm from './components/signUp';
 import Homepage from './components/homepage/homepage';
-import {database, firebaseAuth} from './firebase/config';
+import { database, firebaseAuth } from './firebase/config';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 
-console.log(process.env.REACT_APP_FIREBASE_DATABASE_URL);
 function App() {
-  
-  const [isLoggedIn, setisLoggedIn] = useState(false);
-  const [logIn, setLogIn] = useState(true);
-  const [signUp, setSignUp] = useState(false);
   const [user, setUser] = useState(null);
-
- const showSignUpForm = () => {
-    setLogIn(false);
-    setSignUp(true);
- }
- const showSignInForm = () => {
-  setSignUp(false);
-  setLogIn(true);
-}
-
-const showHomepage = (user) => {
-  setUser(user);
-  setLogIn(false);
-  setisLoggedIn(true)
-  
-}
-
-  const signOut = (user) => {
-   database.ref(`onlineUsers/${user}`).remove();
-   firebaseAuth.signOut();
-   setisLoggedIn(false);
-   setLogIn(true);
+  const [loading, setLoading] = useState(true);
+  const handleLogin = (email, password) => {
+    return firebaseAuth.signInWithEmailAndPassword(email, password);  
   }
-
-  return (
-    <div className="app-wrap">
-      {logIn && <SignInForm showSignUpForm={showSignUpForm} showHomepage={showHomepage}/>}
-      {signUp && <SignUpForm showSignInForm={showSignInForm} />}
-      {isLoggedIn && <Homepage signOut={signOut} userId={user} />}
-    </div>
-  );
+  const handleSignup = (email, password) => {
+    return firebaseAuth.createUserWithEmailAndPassword(email, password);  
+  }
+ const signOut = (user) => {
+   database.ref(`onlineUsers/${ user }`).remove();
+   firebaseAuth.signOut();
+ }
+ useEffect(() => {
+   const unsubscribe = firebaseAuth.onAuthStateChanged(user => {
+    if (user) {
+      setUser(user.uid);
+      setLoading(false);
+      database.ref('onlineUsers').update({ [user.uid]:true })
+    }
+   })
+   return unsubscribe;
+ }, [])
+ return (
+   <Router>
+     <div className="app-wrap">
+       <Switch>
+         <Route path="/login" render={ (props) => <SignInForm { ...props } handleLogin={ handleLogin }/> }/>
+         <Route exact path="/" render={ (props) => !loading? <Homepage {...props} userId={ user } signOut={ signOut }/> : <Redirect to="/login" /> } />
+         <Route path="/signup" render={ (props) => <SignUpForm { ...props } handleSignup={ handleSignup }/> }/>
+       </Switch>
+     </div>           
+   </Router>
+ )
 }
 
 export default App;
