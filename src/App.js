@@ -3,7 +3,7 @@ import SignInForm from './components/signIn';
 import SignUpForm from './components/signUp';
 import Homepage from './components/homepage/homepage';
 import { database, firebaseAuth } from './firebase/config';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 
 function App() {
@@ -30,7 +30,7 @@ function App() {
    return unsubscribe;
  }, [])
  return (
-   <Router basename={process.env.PUBLIC_URL}>
+   <Router basename='/'>
      <div className="app-wrap">
        <Switch>
          <Route path="/login" render={ (props) => <SignInForm { ...props } handleLogin={ handleLogin }/> }/>
