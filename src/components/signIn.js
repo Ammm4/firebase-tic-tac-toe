@@ -13,7 +13,7 @@ function SignInForm({ handleLogin }){
       try {
         setError("");
         await handleLogin(signInDetails.email, signInDetails.password);
-        history.push('https://ammm4.github.io/firebase-tic-tac-toe/'); 
+        history.push('/'); 
       } catch (error) { 
         switch(error.code) {
           case "auth/invalid-email": 
@@ -50,7 +50,7 @@ function SignInForm({ handleLogin }){
           <input type="password" name="password" id="password" onChange={ e => setSignInDetails({ ...signInDetails, password: e.target.value }) } value={ setSignInDetails.password }/>
         </div>           
         <input type="submit" value="Sign In"/>
-        <p>Don't have an account?<br/> <Link to="https://ammm4.github.io/firebase-tic-tac-toe/signup">Sign up</Link></p>
+        <p>Don't have an account?<br/> <Link to="/signup">Sign up</Link></p>
         <p className="signin-error">{ error }</p> 
       </form>
       <h5 className="bottom-line">Project Dedicated to Suraj Neupane.</h5>

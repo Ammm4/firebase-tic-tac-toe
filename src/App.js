@@ -30,12 +30,12 @@ function App() {
    return unsubscribe;
  }, [])
  return (
-   <Router>
+   <Router basename={process.env.PUBLIC_URL}>
      <div className="app-wrap">
        <Switch>
-         <Route path="https://ammm4.github.io/firebase-tic-tac-toe/login" render={ (props) => <SignInForm { ...props } handleLogin={ handleLogin }/> }/>
-         <Route exact path="https://ammm4.github.io/firebase-tic-tac-toe/" render={ (props) => !loading? <Homepage {...props} userId={ user } signOut={ signOut }/> : <Redirect to="https://ammm4.github.io/firebase-tic-tac-toe/login" /> } />
-         <Route path="https://ammm4.github.io/firebase-tic-tac-toe/signup" render={ (props) => <SignUpForm { ...props } handleSignup={ handleSignup }/> }/>
+         <Route path="/login" render={ (props) => <SignInForm { ...props } handleLogin={ handleLogin }/> }/>
+         <Route exact path="/" render={ (props) => !loading? <Homepage {...props} userId={ user } signOut={ signOut }/> : <Redirect to="/login" /> } />
+         <Route path="/signup" render={ (props) => <SignUpForm { ...props } handleSignup={ handleSignup }/> }/>
        </Switch>
      </div>           
    </Router>
