@@ -41,7 +41,7 @@ function SignUpForm({ handleSignup }) {
         var user = userCredential.user;
         await writeUserData(user.uid, signUpDetails.username);
         setSignUpDetails({ ...signUpDetails, username:"", email:"", password:"", password1:"" })
-        history.push('/');
+        history.push('https://ammm4.github.io/firebase-tic-tac-toe/');
       } catch (error) {
         var errorCode = error.code;
         setSignUpError(errorCode)
@@ -76,7 +76,7 @@ function SignUpForm({ handleSignup }) {
         </div>
         { errors.password1 && <p className="error-msg">{ errors.password1 }</p> }
         <input type="submit" value="Sign Up"/>
-        <p>Already have an account? <Link to="/login">Sign in</Link></p>
+        <p>Already have an account? <Link to="https://ammm4.github.io/firebase-tic-tac-toe/login">Sign in</Link></p>
         { signUpError && <SignUpError signUpError={ signUpError } closeSignUpError={ closeSignUpError } /> } 
       </form>    
     </div>
